@@ -5,7 +5,7 @@ struct Indexes {
   public BlobArray<ushort> Elements;
 }
 
-public struct SampleIndexes : IComponentData {
+public struct SampleIndexes {
   private static BlobAssetReference<Indexes> indexes;
 
     public static void Hydrate() {

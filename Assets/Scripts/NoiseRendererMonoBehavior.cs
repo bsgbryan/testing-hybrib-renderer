@@ -15,36 +15,29 @@ public class NoiseRendererMonoBehavior : MonoBehaviour {
     EntityManager entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
 
     EntityArchetype volumetricNoise = entityManager.CreateArchetype(
-      typeof(Resolution),
-      typeof(Scale),
-      typeof(Min),
-      typeof(Frequency),
+      typeof(Noise),
       typeof(LocalToWorld),
       typeof(RenderMesh)
     );
 
-    NativeArray<Entity> entities = new NativeArray<Entity>(100, Allocator.Temp);
+    NativeArray<Entity> entities = new NativeArray<Entity>(Chunks.x * Chunks.y * Chunks.z, Allocator.Temp);
 
     entityManager.CreateEntity(volumetricNoise, entities);
 
-    var res  = new Resolution { Value = resolution };
-    var scal = new Scale      { Value = scale      };
-    var min  = new Min        { Value = minimum    };
-    var freq = new Frequency  { Value = frequency  };
+    var noise = new Noise {
+      Frequency = frequency,
+      Min = minimum,
+      Scale = scale,
+      Resolution = resolution,
+    };
 
     GeometryVertices.Hydrate();
     SampleIndexes.Hydrate();
     PermutationTable.Hydrate();
     Gradients.Hydrate();
 
-    for(int i = 0; i < entities.Length; i++) {
-      Entity entity = entities[i];
-
-      entityManager.SetComponentData(entity, res );
-      entityManager.SetComponentData(entity, scal);
-      entityManager.SetComponentData(entity, min );
-      entityManager.SetComponentData(entity, freq);
-    }
+    for(int i = 0; i < entities.Length; i++)
+      entityManager.SetComponentData(entities[i], noise);
   }
 
   // private void Update() {

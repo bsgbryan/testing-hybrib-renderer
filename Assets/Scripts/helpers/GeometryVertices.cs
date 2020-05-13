@@ -5,7 +5,7 @@ struct Vertexes {
   public BlobArray<ushort> Elements;
 }
 
-public struct GeometryVertices : IComponentData {
+public struct GeometryVertices {
   private static BlobAssetReference<Vertexes> vertexes;
 
   public static void Hydrate() {
